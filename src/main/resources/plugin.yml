@@ -1,0 +1,10 @@
+name: CoreagesGem
+version: '${project.version}'
+main: com.coreages.coreagesgem.CoreagesGem
+api-version: 1.20
+commands:
+  CoreagesGem:
+    aliases:
+      - cg
+      - coreagesgem
+      - cgem
