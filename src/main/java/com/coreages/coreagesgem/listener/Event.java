@@ -91,6 +91,13 @@ public class Event implements Listener {
                     itemMeta.setUnbreakable(true);
                     click.setItemMeta(itemMeta);
                 }
+                if(box.getCustommodels() > 0){
+                    ItemMeta itemMeta = click.getItemMeta();
+                    assert itemMeta != null;
+                    itemMeta.setCustomModelData(box.getCustommodels());
+                    click.setItemMeta(itemMeta);
+                    MsgUtils.chat((CommandSender)e.getWhoClicked(), "&e幻化成功！");
+                }
                 if (box.getEnchantment() != null) {
                     int level = box.getLevel(click);
                     if (box.canStrengthen(level)) {

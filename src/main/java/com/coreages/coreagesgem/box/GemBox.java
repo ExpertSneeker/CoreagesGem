@@ -28,6 +28,9 @@ public class GemBox {
 
     private boolean indestructible = false;
 
+    //自定义材质
+    private int custommodels = 0;
+
     private ArrayList<String> lore = null;
 
     public GemBox(Map<?, ?> map) {
@@ -48,6 +51,13 @@ public class GemBox {
             this.lore = new ArrayList<>();
             list.forEach(ob -> this.lore.add(MsgUtils.format(ob.toString())));
         }
+        System.out.println("111111111");
+        if (map.containsKey("custommodels")){
+            System.out.println("2222222222");
+            Integer models = (Integer) map.get("custommodels");
+            System.out.println("3333333");
+            this.custommodels = ((Integer)models).intValue();
+        }
     }
 
     public Enchantment getEnchantment() {
@@ -60,6 +70,10 @@ public class GemBox {
 
     public ArrayList<String> getLore() {
         return this.lore;
+    }
+
+    public int getCustommodels() {
+        return this.custommodels;
     }
 
     public ArrayList<String> getSupport() {

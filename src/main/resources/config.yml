@@ -18,7 +18,7 @@ group:
 
 #具体附魔内容
 enchant:
-  - name: "&e剑弓体20级附魔宝石"
+  - name: "&e剑弓体2级附魔宝石"
     #检测的宝石名字
     type: DIAMOND
     #检测的宝石材质
@@ -28,6 +28,7 @@ enchant:
     #t 则生效 否则删除这个或者改成其他的不生效
     addlore:
       - "www"
+    custommodels: 0
     #添加则生效 不添加则不生效
     max: 20
     #最大等级(不需要删除即可~)
@@ -39,4 +40,4 @@ enchant:
     type: DIAMOND
     enchant: POWER
     support:
-      - bow
+      - bow0
