@@ -61,6 +61,16 @@ public class Event implements Listener {
         for (String text : box.getSupport()) {
             ArrayList<String> list = CoreagesGem.group.get(text);
             if (list != null && list.contains(type)) {
+                if (box.getEnchantment() != null) {
+                    int level = box.getLevel(click);
+                    if (box.canStrengthen(level)) {
+                        box.strengthen(click, level);
+                        MsgUtils.chat(e.getWhoClicked(), "&e成功强化至等级&b " + (level + box.getUplevel()));
+                    } else {
+                        MsgUtils.chat(e.getWhoClicked(), "&c该物品已达到最大等级！");
+                        return;
+                    }
+                }
                 boolean isChanged = MsgUtils.loreKeywordHand(click, Collections.singletonList("幻化"));
                 if (e.getSlotType() == InventoryType.SlotType.RESULT) {
                     MsgUtils.chat(e.getWhoClicked(), "&c这个格子无法使用附魔宝石！");
@@ -81,7 +91,7 @@ public class Event implements Listener {
                     lores.addAll(box.getLore());
                     itemMeta.setLore(lores);
                     click.setItemMeta(itemMeta);
-                }else {
+                }else if (box.getLore() != null){
                     ItemMeta itemMeta = click.getItemMeta();
                     ArrayList<String> lores = new ArrayList<>();
                     assert itemMeta != null;
@@ -107,15 +117,6 @@ public class Event implements Listener {
                     itemMeta.setCustomModelData(box.getCustommodels());
                     click.setItemMeta(itemMeta);
                     MsgUtils.chat(e.getWhoClicked(), "&e幻化成功！");
-                }
-                if (box.getEnchantment() != null) {
-                    int level = box.getLevel(click);
-                    if (box.canStrengthen(level)) {
-                        box.strengthen(click, level);
-                        MsgUtils.chat(e.getWhoClicked(), "&e成功强化至等级&b " + (level + box.getUplevel()));
-                    } else {
-                        MsgUtils.chat(e.getWhoClicked(), "&c该物品已达到最大等级！");
-                    }
                 }
                 e.setCurrentItem(click);
                 return;
