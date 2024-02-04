@@ -80,6 +80,17 @@ public class Event implements Listener {
                     MsgUtils.chat(e.getWhoClicked(), "&c重叠的物品无法被强化！");
                     return;
                 }
+                if (box.isIndestructible()) {
+                    ItemMeta itemMeta = click.getItemMeta();
+                    assert itemMeta != null;
+                    if (itemMeta.isUnbreakable()){
+                        MsgUtils.chat(e.getWhoClicked(), "&c此物品已经拥有无法破坏属性了！");
+                        return;
+                    }else {
+                        itemMeta.setUnbreakable(true);
+                        click.setItemMeta(itemMeta);
+                    }
+                }
                 cursor.setAmount(cursor.getAmount() - 1);
                 e.setCursor(cursor);
                 if (box.getLore() != null && !isChanged) {
@@ -103,12 +114,6 @@ public class Event implements Listener {
                 if (box.getName() != null){
                     ItemMeta itemMeta = click.getItemMeta();
                     itemMeta.setDisplayName(box.getName());
-                    click.setItemMeta(itemMeta);
-                }
-                if (box.isIndestructible()) {
-                    ItemMeta itemMeta = click.getItemMeta();
-                    assert itemMeta != null;
-                    itemMeta.setUnbreakable(true);
                     click.setItemMeta(itemMeta);
                 }
                 if(box.getCustommodels() > 0){
