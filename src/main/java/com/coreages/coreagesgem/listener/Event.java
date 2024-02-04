@@ -85,6 +85,11 @@ public class Event implements Listener {
                     itemMeta.setLore(lores);
                     click.setItemMeta(itemMeta);
                 }
+                if (box.getName() != null){
+                    ItemMeta itemMeta = click.getItemMeta();
+                    itemMeta.setDisplayName(box.getName());
+                    click.setItemMeta(itemMeta);
+                }
                 if (box.isIndestructible()) {
                     ItemMeta itemMeta = click.getItemMeta();
                     assert itemMeta != null;

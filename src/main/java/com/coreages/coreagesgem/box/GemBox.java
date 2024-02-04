@@ -2,6 +2,7 @@ package com.coreages.coreagesgem.box;
 
 import com.coreages.coreagesgem.CoreagesGem;
 import com.coreages.coreagesgem.utils.MsgUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
@@ -32,6 +33,7 @@ public class GemBox {
     private int custommodels = 0;
 
     private ArrayList<String> lore = null;
+    private String name = null;
 
     public GemBox(Map<?, ?> map) {
         Object o = map.get("max");
@@ -50,6 +52,10 @@ public class GemBox {
             List<?> list = (List)map.get("addlore");
             this.lore = new ArrayList<>();
             list.forEach(ob -> this.lore.add(MsgUtils.format(ob.toString())));
+        }
+        if (map.containsKey("setname")) {
+            String itemname = (String) map.get("setname");
+            this.name = ChatColor.translateAlternateColorCodes('&', itemname);
         }
         System.out.println("111111111");
         if (map.containsKey("custommodels")){
@@ -71,6 +77,7 @@ public class GemBox {
     public ArrayList<String> getLore() {
         return this.lore;
     }
+    public String getName(){return name;}
 
     public int getCustommodels() {
         return this.custommodels;

@@ -26,6 +26,7 @@ enchant:
     #附魔的类型 我瞎打的我也不清楚
     indestructible: "t"
     #t 则生效 否则删除这个或者改成其他的不生效
+    setname: "name"
     addlore:
       - "www"
     custommodels: 0
