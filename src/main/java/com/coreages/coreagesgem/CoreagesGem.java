@@ -28,8 +28,8 @@ public final class CoreagesGem extends JavaPlugin {
     public void onEnable() {
         pl = this;
         loadConfig();
-        getServer().getPluginManager().registerEvents((Listener)new Event(), (Plugin)this);
-        ((PluginCommand)Objects.<PluginCommand>requireNonNull(getCommand("CoreagesGem"))).setExecutor((CommandExecutor)new Cmd());
+        getServer().getPluginManager().registerEvents(new Event(), this);
+        Objects.requireNonNull(getCommand("CoreagesGem")).setExecutor(new Cmd());
 
     }
 

@@ -40,5 +40,7 @@ enchant:
   - name: "&e弓默认附魔宝石"
     type: DIAMOND
     enchant: POWER
+    #提升的等级 默认为1
+    uplevel: 1
     support:
       - bow0

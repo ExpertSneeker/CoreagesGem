@@ -34,6 +34,7 @@ public class GemBox {
 
     private ArrayList<String> lore = null;
     private String name = null;
+    private int uplevel = 1;
 
     public GemBox(Map<?, ?> map) {
         Object o = map.get("max");
@@ -55,14 +56,13 @@ public class GemBox {
         }
         if (map.containsKey("setname")) {
             String itemname = (String) map.get("setname");
-            this.name = ChatColor.translateAlternateColorCodes('&', itemname);
+            this.name = MsgUtils.format(itemname);
         }
-        System.out.println("111111111");
         if (map.containsKey("custommodels")){
-            System.out.println("2222222222");
-            Integer models = (Integer) map.get("custommodels");
-            System.out.println("3333333");
-            this.custommodels = ((Integer)models).intValue();
+            this.custommodels = (Integer) map.get("custommodels");
+        }
+        if (map.containsKey("uplevel")){
+            this.uplevel = (Integer) map.get("uplevel");
         }
     }
 
@@ -78,6 +78,7 @@ public class GemBox {
         return this.lore;
     }
     public String getName(){return name;}
+    public int getUplevel(){return uplevel;}
 
     public int getCustommodels() {
         return this.custommodels;
@@ -93,10 +94,10 @@ public class GemBox {
 
     public boolean canStrengthen(int level) {
         int limit = (this.max != -1) ? this.max : CoreagesGem.max;
-        return (level < limit);
+        return (level + this.uplevel <= limit);
     }
 
     public void strengthen(ItemStack itemStack, int level) {
-        itemStack.addUnsafeEnchantment(this.enchantment, ++level);
+        itemStack.addUnsafeEnchantment(this.enchantment, level + this.uplevel);
     }
 }

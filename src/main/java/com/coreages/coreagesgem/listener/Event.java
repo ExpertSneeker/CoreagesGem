@@ -13,11 +13,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * ClassName: Event
@@ -46,9 +42,9 @@ public class Event implements Listener {
             return;
         if (!cursor.hasItemMeta())
             return;
-        if (!((ItemMeta)Objects.<ItemMeta>requireNonNull(cursor.getItemMeta())).hasLore())
+        if (!Objects.<ItemMeta>requireNonNull(cursor.getItemMeta()).hasLore())
             return;
-        HashMap<String, GemBox> map = (HashMap<String, GemBox>) CoreagesGem.boxs.get(type);
+        HashMap<String, GemBox> map = CoreagesGem.boxs.get(type);
         GemBox box = null;
         List<String> lore = cursor.getItemMeta().getLore();
         assert lore != null;
@@ -63,14 +59,14 @@ public class Event implements Listener {
         e.setCancelled(true);
         type = click.getType().name();
         for (String text : box.getSupport()) {
-            ArrayList<String> list = (ArrayList<String>) CoreagesGem.group.get(text);
+            ArrayList<String> list = CoreagesGem.group.get(text);
             if (list != null && list.contains(type)) {
                 if (e.getSlotType() == InventoryType.SlotType.RESULT) {
-                    MsgUtils.chat((CommandSender)e.getWhoClicked(), "&c这个格子无法使用附魔宝石！");
+                    MsgUtils.chat(e.getWhoClicked(), "&c这个格子无法使用附魔宝石！");
                     return;
                 }
                 if (click.getAmount() > 1) {
-                    MsgUtils.chat((CommandSender)e.getWhoClicked(), "&c重叠的物品无法被强化！");
+                    MsgUtils.chat(e.getWhoClicked(), "&c重叠的物品无法被强化！");
                     return;
                 }
                 cursor.setAmount(cursor.getAmount() - 1);
@@ -101,21 +97,21 @@ public class Event implements Listener {
                     assert itemMeta != null;
                     itemMeta.setCustomModelData(box.getCustommodels());
                     click.setItemMeta(itemMeta);
-                    MsgUtils.chat((CommandSender)e.getWhoClicked(), "&e幻化成功！");
+                    MsgUtils.chat(e.getWhoClicked(), "&e幻化成功！");
                 }
                 if (box.getEnchantment() != null) {
                     int level = box.getLevel(click);
                     if (box.canStrengthen(level)) {
                         box.strengthen(click, level);
-                        MsgUtils.chat((CommandSender)e.getWhoClicked(), "&e成功强化至等级&b " + ++level);
+                        MsgUtils.chat(e.getWhoClicked(), "&e成功强化至等级&b " + (level + box.getUplevel()));
                     } else {
-                        MsgUtils.chat((CommandSender)e.getWhoClicked(), "&c该物品以达到最大等级！");
+                        MsgUtils.chat(e.getWhoClicked(), "&c该物品已达到最大等级！");
                     }
                 }
                 e.setCurrentItem(click);
                 return;
             }
         }
-        MsgUtils.chat((CommandSender)e.getWhoClicked(), "&c该宝石无法对该物品进行强化！");
+        MsgUtils.chat(e.getWhoClicked(), "&c该宝石无法对该物品进行强化！");
     }
 }
