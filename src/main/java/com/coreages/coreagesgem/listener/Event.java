@@ -61,6 +61,7 @@ public class Event implements Listener {
         for (String text : box.getSupport()) {
             ArrayList<String> list = CoreagesGem.group.get(text);
             if (list != null && list.contains(type)) {
+                boolean isChanged = MsgUtils.loreKeywordHand(click, Collections.singletonList("幻化"));
                 if (e.getSlotType() == InventoryType.SlotType.RESULT) {
                     MsgUtils.chat(e.getWhoClicked(), "&c这个格子无法使用附魔宝石！");
                     return;
@@ -71,7 +72,7 @@ public class Event implements Listener {
                 }
                 cursor.setAmount(cursor.getAmount() - 1);
                 e.setCursor(cursor);
-                if (box.getLore() != null) {
+                if (box.getLore() != null && !isChanged) {
                     ItemMeta itemMeta = click.getItemMeta();
                     ArrayList<String> lores = new ArrayList<>();
                     assert itemMeta != null;
@@ -80,6 +81,14 @@ public class Event implements Listener {
                     lores.addAll(box.getLore());
                     itemMeta.setLore(lores);
                     click.setItemMeta(itemMeta);
+                }else {
+                    ItemMeta itemMeta = click.getItemMeta();
+                    ArrayList<String> lores = new ArrayList<>();
+                    assert itemMeta != null;
+                    lores.addAll(box.getLore());
+                    itemMeta.setLore(lores);
+                    click.setItemMeta(itemMeta);
+                    MsgUtils.chat(e.getWhoClicked(), "&c武器已经幻化过，已替换原有的物品介绍！");
                 }
                 if (box.getName() != null){
                     ItemMeta itemMeta = click.getItemMeta();
