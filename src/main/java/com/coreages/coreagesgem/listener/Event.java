@@ -58,20 +58,14 @@ public class Event implements Listener {
             return;
         e.setCancelled(true);
         type = click.getType().name();
-        for (String text : box.getSupport()) {
+        List<String> support = box.getSupport();
+        if (support == null)
+            support = Collections.emptyList();
+        for (String text : support) {
             ArrayList<String> list = CoreagesGem.group.get(text);
             if (list != null && list.contains(type)) {
-                if (box.getEnchantment() != null) {
-                    int level = box.getLevel(click);
-                    if (box.canStrengthen(level)) {
-                        box.strengthen(click, level);
-                        MsgUtils.chat(e.getWhoClicked(), "&e成功强化至等级&b " + (level + box.getUplevel()));
-                    } else {
-                        MsgUtils.chat(e.getWhoClicked(), "&c该物品已达到最大等级！");
-                        return;
-                    }
-                }
-                boolean isChanged = MsgUtils.loreKeywordHand(click, Collections.singletonList("幻化"));
+                // 所有拒绝条件必须在修改物品之前判断：getCurrentItem() 是格子里物品的引用，
+                // 先改后拒绝会让结果格等位置免费获得附魔且不扣宝石。
                 if (e.getSlotType() == InventoryType.SlotType.RESULT) {
                     MsgUtils.chat(e.getWhoClicked(), "&c这个格子无法使用附魔宝石！");
                     return;
@@ -82,14 +76,30 @@ public class Event implements Listener {
                 }
                 if (box.isIndestructible()) {
                     ItemMeta itemMeta = click.getItemMeta();
-                    assert itemMeta != null;
-                    if (itemMeta.isUnbreakable()){
+                    if (itemMeta != null && itemMeta.isUnbreakable()) {
                         MsgUtils.chat(e.getWhoClicked(), "&c此物品已经拥有无法破坏属性了！");
                         return;
-                    }else {
-                        itemMeta.setUnbreakable(true);
-                        click.setItemMeta(itemMeta);
                     }
+                }
+                int level = 0;
+                if (box.getEnchantment() != null) {
+                    level = box.getLevel(click);
+                    if (!box.canStrengthen(level)) {
+                        MsgUtils.chat(e.getWhoClicked(), "&c该物品已达到最大等级！");
+                        return;
+                    }
+                }
+                // 以下才开始修改物品
+                boolean isChanged = MsgUtils.loreKeywordHand(click, Collections.singletonList("幻化"));
+                if (box.getEnchantment() != null) {
+                    box.strengthen(click, level);
+                    MsgUtils.chat(e.getWhoClicked(), "&e成功强化至等级&b " + (level + box.getUplevel()));
+                }
+                if (box.isIndestructible()) {
+                    ItemMeta itemMeta = click.getItemMeta();
+                    assert itemMeta != null;
+                    itemMeta.setUnbreakable(true);
+                    click.setItemMeta(itemMeta);
                 }
                 cursor.setAmount(cursor.getAmount() - 1);
                 e.setCursor(cursor);
